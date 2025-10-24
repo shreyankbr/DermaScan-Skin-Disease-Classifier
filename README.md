@@ -1,5 +1,7 @@
 # DermaScan - AI Skin Disease Classification System
 
+https://huggingface.co/spaces/shreyankbr/DermaScan
+
 DermaScan is a web-based application that uses deep learning to classify skin diseases from images with symptom-weighted predictions. The system provides visual explanations of its diagnoses using GradCAM and generates PDF reports with medical recommendations.
 
 ## Key Features
