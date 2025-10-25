@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaScan - History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo" onclick="window.location.href='/'">
+            <i class="fas fa-stethoscope"></i>
+            <h1>DermaScan</h1>
+        </div>
+        <div class="nav">
+            <button class="nav-btn" id="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </button>
+            <button class="nav-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Disclaimer -->
+    <section class="disclaimer-section">
+        <div class="disclaimer-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="disclaimer-content">
+                <h3>Important Disclaimer</h3>
+                <p>DermaScan is a diagnostic assistance tool and should not replace professional medical advice.
+                    Always consult with a qualified healthcare provider for proper diagnosis and treatment.
+                    Results may not be 100% accurate.
+                </p>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <div class="container">
+        <div class="history-card">
+            <h2>Diagnosis History</h2>
+            <p class="subtitle">Your previous skin analysis results</p>
+
+            <div class="history-list" id="history-list">
+                <p>Loading diagnosis history...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-stethoscope"></i>
+                <span>DermaScan</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Project Demonstration website only</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2025 DermaScan. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="/js/history.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaScan - Diagnosis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo" onclick="window.location.href='/'">
+            <i class="fas fa-stethoscope"></i>
+            <h1>DermaScan</h1>
+        </div>
+        <div class="nav">
+            <button class="nav-btn" id="history-btn" style="display: none;">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </button>
+            <button class="nav-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="trial-badge" id="trial-badge" style="display: none;">
+        <i class="fas fa-flask"></i> Trial, No History
+    </div>
+
+    <!-- Disclaimer -->
+    <section class="disclaimer-section">
+        <div class="disclaimer-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="disclaimer-content">
+                <h3>Important Disclaimer</h3>
+                <p>DermaScan is a diagnostic assistance tool and should not replace professional medical advice.
+                    Project Demonstration website only. Results may not be 100% accurate.</p>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <div class="container">
+        <!-- Upload Section -->
+        <div class="upload-card">
+            <h2>Skin Disease Analysis</h2>
+            <p class="subtitle">Upload a clear image of the affected skin area for AI-powered diagnosis</p>
+            <p class="subtitle"><strong>Supported Conditions: Acne, Benign Tumors, Eczema, Infestation
+                    Bites, Lichen, Psoriasis, Seborrheic Keratoses, Vitiligo, Warts </strong></p>
+
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Upload Skin Image</h3>
+                <p>Drag & drop or click to browse</p>
+                <p class="upload-note">Supports JPG, PNG, WEBP • Max 10MB</p>
+                <p class="upload-note"><strong>Supported Conditions:</strong> Acne, Benign Tumors, Eczema, Infestations
+                    Bites, Lichen, Psoriasis, Seborrheic Keratoses, Vitiligo, Warts</p>
+                <div class="upload-options">
+                    <button class="btn secondary-btn" id="camera-btn">
+                        <i class="fas fa-camera"></i> Take Photo
+                    </button>
+                    <button class="btn secondary-btn" id="upload-btn">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                </div>
+            </div>
+
+            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+
+            <div class="preview-container" id="preview-container" style="display: none;">
+                <div class="image-preview">
+                    <img id="preview-image" alt="Preview">
+                    <button class="remove-btn" id="remove-image">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Symptoms Section -->
+            <div class="symptoms-form">
+                <h3>Select Symptoms (Optional)</h3>
+                <p class="subtitle">Select any symptoms to improve diagnosis accuracy</p>
+                <div class="symptom-options">
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" id="itching">
+                        <span class="checkmark"></span>
+                        Itching
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" id="bleeding">
+                        <span class="checkmark"></span>
+                        Bleeding
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" id="scaly_skin">
+                        <span class="checkmark"></span>
+                        Scaly Skin
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" id="white_patches">
+                        <span class="checkmark"></span>
+                        White Patches
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" id="sudden_onset">
+                        <span class="checkmark"></span>
+                        Sudden Onset
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn primary-btn" id="diagnose-btn" disabled>
+                <i class="fas fa-search"></i> Analyze Image
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-card" id="results-section" style="display: none;">
+            <h2>Diagnosis Results</h2>
+            <p class="subtitle">AI-powered analysis of your skin condition</p>
+
+            <div class="results-content">
+                <div class="results-images">
+                    <div class="image-comparison">
+                        <div class="original-image">
+                            <h4>Original Image</h4>
+                            <img id="original-image" alt="Original">
+                        </div>
+                        <div class="gradcam-image">
+                            <h4>AI Attention Map</h4>
+                            <img id="gradcam-image" alt="GradCAM">
+                        </div>
+                    </div>
+
+                    <div class="top-diagnosis" id="top-diagnosis">
+                        <h3>Primary Diagnosis</h3>
+                        <div class="diagnosis-item">
+                            <div class="diagnosis-name">Loading...</div>
+                            <div class="diagnosis-probability">0%</div>
+                        </div>
+                        <div class="confidence-meter">
+                            <div class="confidence-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-details">
+                    <div class="other-diagnoses">
+                        <h3>Other Possibilities</h3>
+                        <div id="other-diagnoses">
+                            <div class="diagnosis-item">
+                                <div class="diagnosis-name">Loading...</div>
+                                <div class="diagnosis-probability">0%</div>
+                                <div class="confidence-meter">
+                                    <div class="confidence-bar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <h3>Care Recommendations</h3>
+                        <div id="recommendations">
+                            <p>Analysis in progress...</p>
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="btn primary-btn" id="generate-report">
+                            <i class="fas fa-file-pdf"></i> Download PDF Report
+                        </button>
+                        <button class="btn secondary-btn" id="new-diagnosis">
+                            <i class="fas fa-redo"></i> New Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="loading-modal" id="loading-modal" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Analyzing Image</h3>
+            <p>AI is processing your skin image...</p>
+            <p class="loading-note">This may take a few seconds</p>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="modal" id="camera-modal">
+        <div class="modal-content">
+            <span class="close-camera">&times;</span>
+            <h3>Take Photo</h3>
+            <video id="camera-feed" autoplay playsinline></video>
+            <div class="camera-controls">
+                <button class="btn secondary-btn" id="cancel-camera-btn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button id="capture-btn">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-stethoscope"></i>
+                <span>DermaScan</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Project Demonstration website only</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2025 DermaScan. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script type="module" src="/js/diagnosis.js"></script>
+</body>
+
+</html>
