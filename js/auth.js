@@ -1,11 +1,11 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyB8B1ZKOK6T0JIehHCrXB8oi_NGOWs2VHk",
-    authDomain: "skin-disease-3cbf9.firebaseapp.com",
-    projectId: "skin-disease-3cbf9",
-    storageBucket: "skin-disease-3cbf9.appspot.com",
-    messagingSenderId: "117215400065",
-    appId: "1:117215400065:web:4975b24971af7a37fc3d80"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 // Initialize Firebase
