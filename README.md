@@ -90,7 +90,7 @@ For those who only want the project, I have uploaded my trained model, you may u
 
 4. Dataset Preprocessing:
   
-    - Download any kaggle dataset and make necessary changes in all files regardiing names
+    - Download any kaggle dataset and make necessary changes in all files regarding names
 
     - Run preprocess.py if the dataset is not split into train, test, validation
 
@@ -116,7 +116,6 @@ For those who only want the project, I have uploaded my trained model, you may u
 ⚠️ Important: This is a demonstration project only. The system has several limitations:
 - Model was trained on a dataset containing watermarks hence it is not very accurate when using other images
 - Not medically validated
-- Hyperparameter tuning is not done
 - Accuracy affected by image quality
 - Should not be used for actual medical diagnosis
 
