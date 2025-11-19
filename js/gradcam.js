@@ -1,5 +1,3 @@
-// gradcam.js - GradCAM visualization for skin disease classifier
-
 export function generateGradCAM(imageElement, targetElement, diagnosis) {
     return new Promise((resolve) => {
         const canvas = document.createElement('canvas');
