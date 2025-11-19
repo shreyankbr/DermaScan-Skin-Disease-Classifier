@@ -1,71 +1,144 @@
-export function generateGradCAM(imageElement, targetElement, diagnosis) {
-    return new Promise((resolve) => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = imageElement.naturalWidth || imageElement.width;
-        canvas.height = imageElement.naturalHeight || imageElement.height;
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
-        ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-        // Generate heatmap based on diagnosis
-        for (let i = 0; i < data.length; i += 4) {
-            const x = (i / 4) % canvas.width;
-            const y = Math.floor((i / 4) / canvas.width);
+// DOM Elements
+const historyList = document.getElementById('history-list');
+const backBtn = document.getElementById('back-btn');
+const logoutBtn = document.getElementById('logout-btn');
 
-            // Different patterns for different diagnoses
-            if (diagnosis === 'Acne') {
-                if (Math.random() > 0.7 &&
-                    (Math.abs(x - canvas.width / 3) < 50 ||
-                        Math.abs(x - 2 * canvas.width / 3) < 40)) {
-                    data[i] = 255; // Red channel
-                    data[i + 3] = 180; // Alpha
-                }
-            }
-            else if (diagnosis === 'Eczema') {
-                if (x > canvas.width / 4 && x < 3 * canvas.width / 4 &&
-                    y > canvas.height / 4 && y < 3 * canvas.height / 4 &&
-                    Math.random() > 0.6) {
-                    data[i] = 255;
-                    data[i + 1] = 150;
-                    data[i + 3] = 160;
-                }
-            }
-            else if (diagnosis === 'Psoriasis') {
-                if ((x % 30 < 15 && y % 30 < 15) || Math.random() > 0.8) {
-                    data[i] = 255;
-                    data[i + 3] = 200;
-                }
-            }
-            else if (diagnosis === 'Vitiligo') {
-                const distToCenter = Math.sqrt(Math.pow(x - canvas.width / 2, 2) +
-                    Math.pow(y - canvas.height / 2, 2));
-                if (distToCenter < 80 || Math.random() > 0.9) {
-                    data[i] = 255;
-                    data[i + 1] = 255;
-                    data[i + 2] = 255;
-                    data[i + 3] = 150;
-                }
-            }
-            else {
-                // Default pattern
-                if (Math.random() > 0.85) {
-                    data[i] = 255;
-                    data[i + 3] = 180;
-                }
-            }
-        }
+// Auth State Listener
+auth.onAuthStateChanged(user => {
+    if (!user) {
+        window.location.href = 'home.html';
+    } else {
+        loadDiagnosisHistory(user.uid);
+    }
+});
 
-        ctx.putImageData(imageData, 0, 0);
-        targetElement.src = canvas.toDataURL();
-        resolve();
-    });
+// Load Diagnosis History
+function loadDiagnosisHistory(userId) {
+    historyList.innerHTML = '<p>Loading diagnosis history...</p>';
+
+    db.collection('users')
+        .doc(userId)
+        .collection('diagnoses')
+        .orderBy('date', 'desc')
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                historyList.innerHTML = `
+                    <div class="trial-message">
+                        <div class="trial-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>No History Yet</h3>
+                        <p>You haven't performed any diagnoses yet. Start analyzing skin images to see your history here.</p>
+                        <button class="btn primary-btn" onclick="window.location.href='/diagnosis.html'">
+                            <i class="fas fa-camera"></i> Start New Diagnosis
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            historyList.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+
+                let displayDate;
+                try {
+                    if (data.date?.toDate) {
+                        displayDate = data.date.toDate();
+                    } else if (data.date) {
+                        displayDate = new Date(data.date);
+                    } else {
+                        displayDate = new Date();
+                    }
+
+                    displayDate = displayDate.toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                } catch (e) {
+                    console.warn('Error formatting date:', e);
+                    displayDate = "Date not available";
+                }
+
+                const results = data.results ? Object.entries(data.results)
+                    .map(([name, prob]) => ({ name, prob }))
+                    .sort((a, b) => b.prob - a.prob)
+                    .slice(0, 3) : [];
+
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `
+                    <div class="history-date"><strong>Date:</strong> ${displayDate}</div>
+                    ${data.imageUrl ? `<img src="${data.imageUrl}" class="history-image" alt="Diagnosis preview" />` : ''}
+                    <div class="history-results">
+                        <strong>Top Results:</strong>
+                        <ul>
+                            ${results.map(result =>
+                    `<li>${result.name}: ${(result.prob * 100).toFixed(1)}%</li>`
+                ).join('')}
+                        </ul>
+                    </div>
+                    <div class="history-symptoms">
+                        <strong>Symptoms:</strong>
+                        <ul>
+                            ${data.symptoms?.itching ? '<li>✓ Itching</li>' : ''}
+                            ${data.symptoms?.bleeding ? '<li>✓ Bleeding</li>' : ''}
+                            ${data.symptoms?.scaly_skin ? '<li>✓ Scaly Skin</li>' : ''}
+                            ${data.symptoms?.white_patches ? '<li>✓ White Patches</li>' : ''}
+                            ${data.symptoms?.sudden_onset ? '<li>✓ Sudden Onset</li>' : ''}
+                            ${!data.symptoms?.itching &&
+                        !data.symptoms?.bleeding &&
+                        !data.symptoms?.scaly_skin &&
+                        !data.symptoms?.white_patches &&
+                        !data.symptoms?.sudden_onset ? '<li>No symptoms selected</li>' : ''}
+                         </ul>
+                    </div>
+                `;
+
+                historyList.appendChild(item);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading history:', error);
+            historyList.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Error loading history. Please try again later.</p>
+                </div>
+            `;
+        });
 }
 
-export function initGradCAM() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'gradcam-canvas';
-    canvas.style.display = 'none';
-    document.body.appendChild(canvas);
-}
+// Buttons
+backBtn.addEventListener('click', () => {
+    window.location.href = 'diagnosis.html';
+});
+
+logoutBtn.addEventListener('click', () => {
+    auth.signOut()
+        .then(() => window.location.href = 'home.html')
+        .catch(error => console.error('Logout error:', error));
+});
