@@ -10,7 +10,6 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
-
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
