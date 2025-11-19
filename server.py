@@ -25,8 +25,6 @@ symptom_weights = {
 
 # === Device setup ===
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# === Download model from Google Drive ===
 model_path = "models/skindisease.pth"
 
 # === Load model architecture + weights ===
@@ -108,7 +106,7 @@ def predict():
 
         # Adjust probabilities with symptoms
         adjusted_probs = probs + 0.2 * symptom_vector
-        adjusted_probs = np.maximum(adjusted_probs, 0)  # Ensure no negative probabilities
+        adjusted_probs = np.maximum(adjusted_probs, 0)
         adjusted_probs /= adjusted_probs.sum()
 
         # Format predictions
@@ -130,7 +128,7 @@ def serve_static(filename):
     if os.path.exists(filename):
         return send_from_directory('.', filename)
     else:
-        return send_file('home.html')  # Fallback
+        return send_file('home.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 7860))
