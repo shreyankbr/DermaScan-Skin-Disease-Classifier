@@ -1,5 +1,3 @@
-// model.js - Skin disease prediction model
-
 const CLASSES = [
     'Acne', 'Benign_tumors', 'Eczema', 'Infestations_Bites', 'Lichen',
     'Psoriasis', 'Seborrh_Keratoses', 'Vitiligo', 'Warts'
