@@ -33,12 +33,6 @@ graph TD
     CNN --> CAM[GradCAM Visualization]
 ````
 
-## 📸 Screenshots
-
-*The main diagnostic interface allowing image upload and symptom selection.*
-
-*AI analysis showing the predicted condition, confidence score, and GradCAM heatmap.*
-
 -----
 
 ## ✨ Key Features
