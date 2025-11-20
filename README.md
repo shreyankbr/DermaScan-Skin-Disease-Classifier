@@ -94,7 +94,7 @@ The model was trained on a curated dataset of **5,835 images** balanced across 9
 
 ```bash
 git clone [https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git](https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git)
-cd https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git
+cd DermaScan-Skin-Disease-Classifier
 ```
 
 ### 2\. Environment Setup
