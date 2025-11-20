@@ -1,131 +1,174 @@
-# DermaScan - AI Skin Disease Classification System
+# DermaScan - AI-Powered Skin Disease Classification
 
-https://huggingface.co/spaces/shreyankbr/DermaScan
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+[![Flask](https://img.shields.io/badge/Flask-%23000.svg?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-DermaScan is a web-based application that uses deep learning to classify skin diseases from images with symptom-weighted predictions. The system provides visual explanations of its diagnoses using GradCAM and generates PDF reports with medical recommendations.
+**DermaScan** is a multi-modal diagnostic tool that combines Deep Learning (CNNs) with clinical symptom analysis to classify skin conditions. It utilizes **EfficientNet-B3** for image feature extraction and integrates patient-reported symptoms to refine prediction probabilities, bridging the gap between visual analysis and patient history.
 
-## Key Features
+## 🚀 Live Demo
+Try the deployed application:
+**[🔗 Launch DermaScan Space](https://huggingface.co/spaces/shreyankbr/DermaScan)**
 
-- 🩺 **Multi-class Classification**: Identifies 9 skin conditions (Acne, Eczema, Psoriasis, etc.)
-- 🔍 **Symptom-Weighted Predictions**: Combines image analysis with patient-reported symptoms
-- 📸 **Multiple Input Methods**: Upload images or capture directly from camera
-- 🎨 **Visual Explanations**: GradCAM heatmaps highlight affected areas
-- 📄 **PDF Reports**: Automatic report generation with diagnosis details
-- 🔐 **User Accounts**: Secure authentication and diagnosis history tracking
+---
 
-## Technology Stack
+## 🧠 System Architecture
 
-### Frontend
-- HTML, CSS, JavaScript
-- Firebase Authentication
-- Firebase Firestore (NoSQL database)
-- jsPDF (Report generation)
-- Chart.js (Visualizations)
+DermaScan employs a **Feature Fusion Strategy**. Unlike standard classifiers that rely solely on pixels, this system adjusts the model's confidence based on the presence of clinical symptoms (itching, bleeding, etc.), mimicking a doctor's diagnostic process.
 
-### Backend & AI
-- Python 3.12+
-- Flask
-- PyTorch (Deep Learning)
-- EfficientNet-B3 (CNN Architecture)
-- OpenCV (Image Processing)
-- Timm (PyTorch Image Models)
+```mermaid
+graph TD
+    Img[Input Image] --> CNN[EfficientNet-B3<br/>Feature Extraction]
+    CNN --> Raw[Raw Probability Vector]
+    
+    Sym[User Symptoms<br/>Itching, Bleeding, etc.] --> W[Symptom Weight Matrix]
+    W --> Adj[Adjustment Vector]
+    
+    Raw --> Fusion(Feature Fusion)
+    Adj --> Fusion
+    
+    Fusion --> Final[Final Prediction]
+    Final --> Report[PDF Report Generation]
+    CNN --> CAM[GradCAM Visualization]
+````
 
-### Deployment
-- Visual Studio Code
+## 📸 Screenshots
 
-## Dataset
+*The main diagnostic interface allowing image upload and symptom selection.*
 
-The model was trained on a curated dataset from Kaggle containing 5,835 images across 9 skin disease categories:
+*AI analysis showing the predicted condition, confidence score, and GradCAM heatmap.*
 
-1. Acne
-2. Benign tumors
-3. Eczema
-4. Infestations Bites
-5. Lichen
-6. Psoriasis
-7. Seborrheic Keratoses
-8. Vitiligo
-9. Warts
+-----
 
-The dataset I used is no longer available on Kaggle. Any dataset from kaggle can be taken, but be sure to make the necessary name changes in all of the files.
+## ✨ Key Features
 
-For those who only want the project, I have uploaded my trained model, you may use that model and skip preprocessing and model training
+  - **🩺 Multi-Modal Diagnosis:** Classifies **9 distinct skin conditions** by synthesizing visual data with patient symptoms.
+  - **🎨 Explainable AI (XAI):** Generates **GradCAM heatmaps** to visualize exactly which skin regions influenced the AI's decision.
+  - **📄 Automated Reporting:** Instantly generates downloadable **PDF Medical Reports** using `jsPDF` for patient record keeping.
+  - **📸 Flexible Input:** Supports drag-and-drop file uploads and real-time **camera capture**.
+  - **🔐 Secure History:** Uses **Firebase Auth & Firestore** to securely store user data and past diagnosis history.
+  - **📱 Responsive Design:** Fully optimized for mobile and desktop usage.
 
-## Installation
+-----
+
+## 🛠️ Technology Stack
+
+| Component | Technologies |
+|-----------|--------------|
+| **Deep Learning** | PyTorch, EfficientNet-B3, Timm, Torchvision |
+| **Backend** | Python 3.12+, Flask, NumPy |
+| **Frontend** | HTML5, CSS3, Vanilla JS |
+| **Database/Auth** | Firebase Firestore, Firebase Authentication |
+| **Utilities** | OpenCV (Image Proc), jsPDF (Reports), Chart.js (Viz) |
+
+-----
+
+## 🔬 Model & Dataset
+
+### The Dataset
+
+The model was trained on a curated dataset of **5,835 images** balanced across 9 classes.
+
+  * **Classes:** Acne, Benign Tumors, Eczema, Infestations/Bites, Lichen, Psoriasis, Seborrheic Keratoses, Vitiligo, Warts.
+
+### Algorithmic Logic
+
+1.  **Image Analysis:** The image is processed by `EfficientNet-B3` to generate a base probability vector.
+2.  **Symptom Weighting:** A weighted vector is calculated based on active symptoms (e.g., `Bleeding` increases probability for *Benign Tumors* and *Psoriasis*).
+3.  **Fusion:** `Final_Score = Image_Prob + (0.2 * Symptom_Weight)`.
+
+> **Note:** The dataset used for training contained some watermarked images. For production-grade results, retraining on a clean, medically verified dataset is recommended.
+
+-----
+
+## ⚙️ Installation & Setup
 
 ### Prerequisites
-- Python 3.12+
-- Firebase account
-- Visual Studio Code Preferred
 
-### Local Setup
+  * Python 3.12+
+  * Firebase Account
+  * Visual Studio Code (Recommended)
 
-1. Download the repository and keep the structure the same
+### 1\. Clone the Repository
 
-2. Virtual Environment:
+```bash
+git clone [https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git](https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git)
+cd https://github.com/shreyankbr/DermaScan-Skin-Disease-Classifier.git
+```
 
-    - Set up a virtual environment in the repo folder 
+### 2\. Environment Setup
 
-    - Run pip install -r requirements.txt in cmd after changing into the repo folder
+```bash
+# Create virtual environment
+python -m venv venv
 
-3. **Firebase Configuration**:
+# Activate (Windows)
+venv\Scripts\activate
 
-    - Create a new Firebase project
-     
-    - Enable Email/Password authentication in Firebase Console
-     
-    - Update firebaseConfig in js/diagnosis.js, js/auth.js and js/history.js
-      ```javascript
-      const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        databaseURL: "YOUR_DATABASE_URL",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
-      };
+# Activate (Mac/Linux)
+source venv/bin/activate
 
-    - Apply the rules given in Firestore rules.txt to firestore rules
+# Install dependencies
+pip install -r requirements.txt
+```
 
-4. Dataset Preprocessing:
-  
-    - Download any kaggle dataset and make necessary changes in all files regarding names
+### 3\. Firebase Configuration
 
-    - Run preprocess.py if the dataset is not split into train, test, validation
+1.  Create a project in the [Firebase Console](https://console.firebase.google.com/).
+2.  Enable **Email/Password** in the Authentication tab.
+3.  Create a **Firestore Database** and paste the contents of `Firestore rules.txt` into the Rules tab.
+4.  Update the `firebaseConfig` object in **three files** with your credentials:
+      - `js/auth.js`
+      - `js/diagnosis.js`
+      - `js/history.js`
 
-5. Model training:
+<!-- end list -->
 
-    - Run model_train.py and train the model and select the best ones from the many epochs
+```javascript
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  // ... other config keys
+};
+```
 
-6. Run:
+### 4\. Dataset & Training (Optional)
 
-    - Run server.py preferable in visual studio code in dedicated terminal and open the localhost link with the 5000 port
-   
-## Usuage
+If you wish to retrain the model:
 
-- Registration/Login: Create an account or login
-- Upload Image: Either upload an image or use camera capture
-- Select Symptoms: Check relevant symptoms
-- Analyze: Click "Diagnose" button
-- View Results: See predictions with confidence scores
-- Generate Report: Download PDF with diagnosis details
+1.  Place your dataset in a folder named `SkinDisease`.
+2.  Run preprocessing: `python preprocess.py`
+3.  Train the model: `python model_train.py`
 
-## Limitations
+### 5\. Run the Application
 
-⚠️ Important: This is a demonstration project only. The system has several limitations:
-- Model was trained on a dataset containing watermarks hence it is not very accurate when using other images
-- Not medically validated
-- Accuracy affected by image quality
-- Should not be used for actual medical diagnosis
+```bash
+python server.py
+```
 
-## Areas of Improvement
+Access the application at `http://localhost:5000`.
 
-- Feel free to use any better CNN models
-- Add more skin conditions
-- Add multi-language support
-- Improve model accuracy with more data
-- Dark theme
+-----
 
-# License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## ⚠️ Medical Disclaimer & Limitations
+
+**This software is for research and educational purposes only.**
+
+  * **Not a Medical Device:** DermaScan is not a substitute for professional medical advice, diagnosis, or treatment.
+  * **Accuracy:** The model's accuracy depends heavily on image quality and lighting. The current model may exhibit bias due to watermarks in the training data.
+  * **False Negatives:** A low confidence score does not rule out the presence of a skin condition.
+
+## 🔮 Areas for Improvement
+
+  * [ ] Integration of Transformer-based models (ViT/Swin).
+  * [ ] Support for multi-language reports.
+  * [ ] Dark Mode implementation.
+  * [ ] Retraining on a larger, watermark-free medical dataset (e.g., ISIC).
+
+-----
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more details.
