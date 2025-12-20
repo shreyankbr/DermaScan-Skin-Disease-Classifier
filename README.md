@@ -12,11 +12,20 @@
 Try the deployed application:
 **[🔗 Launch DermaScan Space](https://huggingface.co/spaces/shreyankbr/DermaScan)**
 
+![DermaScan Workflow GIF](assets/demo.gif)
+
+*Watch how DermaScan fuses visual data with clinical symptoms for better accuracy.*
+
 ---
 
 ## 🧠 System Architecture
 
 DermaScan employs a **Feature Fusion Strategy**. Unlike standard classifiers that rely solely on pixels, this system adjusts the model's confidence based on the presence of clinical symptoms (itching, bleeding, etc.), mimicking a doctor's diagnostic process.
+
+### Explainable AI (Grad-CAM)
+![Grad-CAM Explainability](assets/xai.png)
+
+*Figure: The model visualizes its focus area (Right) compared to the original input (Left), ensuring the diagnosis relies on relevant lesion features.*
 
 ```mermaid
 graph TD
@@ -41,6 +50,13 @@ graph TD
   - **🩺 Multi-Modal Diagnosis:** Classifies **9 distinct skin conditions** by synthesizing visual data with patient symptoms.
   - **🎨 Explainable AI (XAI):** Generates **GradCAM heatmaps** to visualize exactly which skin regions influenced the AI's decision.
   - **📄 Automated Reporting:** Instantly generates downloadable **PDF Medical Reports** using `jsPDF` for patient record keeping.
+
+<p align="center">
+    <img src="assets/report.png" alt="DermaScan PDF Report Example" width="600">
+        <br>
+    <em>Figure: Example of the standardized PDF report generated for clinical documentation.</em>
+</p>
+    
   - **📸 Flexible Input:** Supports drag-and-drop file uploads and real-time **camera capture**.
   - **🔐 Secure History:** Uses **Firebase Auth & Firestore** to securely store user data and past diagnosis history.
   - **📱 Responsive Design:** Fully optimized for mobile and desktop usage.
@@ -73,7 +89,7 @@ The model was trained on a curated dataset of **5,835 images** balanced across 9
 2.  **Symptom Weighting:** A weighted vector is calculated based on active symptoms (e.g., `Bleeding` increases probability for *Benign Tumors* and *Psoriasis*).
 3.  **Fusion:** `Final_Score = Image_Prob + (0.2 * Symptom_Weight)`.
 
-> **Note:** The dataset used for training contained some watermarked images. For production-grade results, retraining on a clean, medically verified dataset is recommended.
+> **Note:** For production-grade results, retraining on a clean, medically verified dataset is recommended.
 
 -----
 
@@ -152,7 +168,7 @@ Access the application at `http://localhost:5000`.
 **This software is for research and educational purposes only.**
 
   * **Not a Medical Device:** DermaScan is not a substitute for professional medical advice, diagnosis, or treatment.
-  * **Accuracy:** The model's accuracy depends heavily on image quality and lighting. The current model may exhibit bias due to watermarks in the training data.
+  * **Accuracy:** The model's accuracy depends heavily on image quality and lighting.
   * **False Negatives:** A low confidence score does not rule out the presence of a skin condition.
 
 ## 🔮 Areas for Improvement
