@@ -12,7 +12,7 @@ import timm
 import csv
 
 # Log file path
-log_path = "training_log.csv"
+log_path = " "   # Replace with .csv file path
 with open(log_path, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(["Epoch", "Train_Acc", "Val_Acc"])
@@ -30,10 +30,10 @@ set_seed()
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 BATCH_SIZE = 32
 NUM_CLASSES = 9
-NUM_EPOCHS = 30        #Can change epoch to any number, it takes about 15-20 minutes per epoch (depends on your system config)
+NUM_EPOCHS = 30        # Change if needed
 IMG_SIZE = 300
-DATA_DIR = "processed_dataset"
-MODEL_NAME = "efficientnet_b3"
+DATA_DIR = ' '   # Replace with preprocessed directory path 
+MODEL_NAME = "best_model"
 MODEL_DIR = "models"
 os.makedirs(MODEL_DIR, exist_ok=True)
 
