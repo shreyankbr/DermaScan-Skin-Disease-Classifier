@@ -5,8 +5,8 @@ from PIL import Image
 from tqdm import tqdm
 
 # Configuration
-input_dir = 'SkinDisease'
-output_dir = 'processed_dataset'
+input_dir = ' '       # Enter dataset directory path
+output_dir = ' '      # Enter output firectory path
 image_size = (300, 300)
 classes = [
     'Acne',
