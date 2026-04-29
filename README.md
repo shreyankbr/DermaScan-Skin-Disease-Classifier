@@ -128,7 +128,7 @@ pip install -r requirements.txt
 
 1.  Create a project in the [Firebase Console](https://console.firebase.google.com/).
 2.  Enable **Email/Password** in the Authentication tab.
-3.  Create a **Firestore Database** and paste the contents of `Firestore rules.txt` into the Rules tab.
+3.  Create a **Firestore Database**
 4.  Update the `firebaseConfig` object in **three files** with your credentials:
       - `js/auth.js`
       - `js/diagnosis.js`
